@@ -1,0 +1,7 @@
+staging:
+  name: letsencrypt-staging
+
+prod:
+  name: letsencrypt-prod
+
+email: certificates@vooban.com

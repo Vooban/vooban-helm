@@ -1,0 +1,19 @@
+
+ingresses:
+  - paths:
+    - path: /
+      serviceName: hello-service
+      port: 80
+    rewrite: /
+    readTimeout: 60
+    annotations: {}
+
+hosts:
+  - chart-example.local
+
+tls:
+  clusterIssuer: letsencrypt-prod
+  secretName: chart-example-local-tls
+
+defaultReadTimeout: 30
+defaultSendTimeout: 30

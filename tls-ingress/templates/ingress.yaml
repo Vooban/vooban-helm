@@ -1,0 +1,46 @@
+{{- range .Values.ingresses }}
+{{- $ingress := . }}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ lower (randAlphaNum 20) | quote }}
+  labels:
+    chart: {{ template "tls-ingress.chart" $ }}
+    release: {{ $.Release.Name }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    {{- if .rewrite }}
+    nginx.ingress.kubernetes.io/rewrite-target: {{ .rewrite }}
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      {{- range $ingress.paths }}
+      {{ printf "rewrite ^(%s)$ $1/ permanent;" .path }}
+      {{- end }}
+    {{- end }}
+    nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .readTimeout | default $.Values.defaultReadTimeout | quote }}
+    nginx.ingress.kubernetes.io/proxy-send-timeout: {{ .sendTimeout | default $.Values.defaultSendTimeout | quote }}
+    {{- if $ingress.annotations }}
+{{ toYaml $ingress.annotations | indent 4 }}
+    {{- end }}
+spec:
+{{- if $.Values.tls }}
+  tls:
+    - hosts:
+        {{- range $.Values.hosts }}
+        - {{ . | quote }}
+        {{- end}}
+      secretName: {{ $.Values.tls.secretName }}
+{{- end }}
+  rules:
+    {{- range $.Values.hosts }}
+    - host: {{ . | quote }}
+      http:
+        paths:
+        {{- range $ingress.paths }}
+          - path: {{ .path }}
+            backend:
+              serviceName: {{ .serviceName }}
+              servicePort: {{ .port }}
+        {{- end }}
+    {{- end }}
+{{- end}}

@@ -1,0 +1,5 @@
+ClusterIssuers installed:
+1. {{ .Values.staging.name }}
+2. {{ .Values.prod.name }}
+
+Email used to register certificates: {{ .Values.email }}
