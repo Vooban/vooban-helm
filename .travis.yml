@@ -15,7 +15,7 @@ install:
 
 before_script:
   - /tmp/helm init --client-only
-  - /tmp/helm repo add cos https://vooban.github.io/vooban-helm/
+  - /tmp/helm repo add vooban https://vooban.github.io/vooban-helm/index.yaml
 script:
   - /tmp/helm lint */
   - /tmp/helm repo index --merge index.yaml */
