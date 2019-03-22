@@ -7,6 +7,12 @@ sudo: false
 env:
   global:
     - HELM_VERSION="v2.12.3"
+    - USER="Travis CI"
+    - EMAIL="travis-ci@vooban.com"
+    - REPO="vooban-helm"
+    - FILES="README.md foo.txt bar.txt"
+    - GH_REPO="github.com/vooban/vooban-helm.git"
+    - secure: "put travis gem output here => http://docs.travis-ci.com/user/encryption-keys/"
 
 install:
   - wget http://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O /tmp/helm.tar.gz
@@ -20,3 +26,8 @@ script:
   - /tmp/helm lint */
   - /tmp/helm package */
   - /tmp/helm repo index --merge index.yaml .
+
+after_success:
+  - git add .
+  - git commit -m "Chart update [skip ci]"
+  - git push
