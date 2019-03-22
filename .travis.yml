@@ -1,0 +1,20 @@
+---
+language: generic
+
+dist: trusty
+sudo: false
+
+env:
+  global:
+    - HELM_VERSION="v2.12.3"
+
+install:
+  - wget http://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O /tmp/helm.tar.gz
+  - tar xzf /tmp/helm.tar.gz -C /tmp --strip-components=1
+  - chmod +x /tmp/helm
+
+before_script:
+  - /tmp/helm init --client-only
+  - /tmp/helm repo add cos https://vooban.github.io/vooban-helm/
+script:
+  - /tmp/helm lint */
