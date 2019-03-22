@@ -18,3 +18,4 @@ before_script:
   - /tmp/helm repo add cos https://vooban.github.io/vooban-helm/
 script:
   - /tmp/helm lint */
+  - /tmp/helm repo index --merge index.yaml */
