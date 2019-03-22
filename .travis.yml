@@ -30,4 +30,5 @@ script:
 after_success:
   - git add .
   - git commit -m "Chart update [skip ci]"
-  - git push
+  - branch_name=`git rev-parse --abbrev-ref HEAD`
+  - git push origin $branch_name
