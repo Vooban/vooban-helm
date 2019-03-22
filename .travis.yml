@@ -26,8 +26,6 @@ script:
   - /tmp/helm lint */
   - /tmp/helm package */
   - /tmp/helm repo index --merge index.yaml .
-
-after_success:
   - git add .
   - git commit -m "Chart update [skip ci]"
   - branch_name=`git rev-parse --abbrev-ref HEAD`
