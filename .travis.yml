@@ -1,32 +1,34 @@
----
 language: generic
-
 dist: trusty
 sudo: false
-
 env:
   global:
-    - HELM_VERSION="v2.12.3"
-    - USER="Travis CI"
-    - EMAIL="travis-ci@vooban.com"
-    - REPO="vooban-helm"
-    - FILES="README.md foo.txt bar.txt"
-    - GH_REPO="github.com/vooban/vooban-helm.git"
-    - secure: "put travis gem output here => http://docs.travis-ci.com/user/encryption-keys/"
-
+  - HELM_VERSION="v2.12.3"
+  - USER="Travis CI"
+  - EMAIL="travis-ci@vooban.com"
+  - REPO="helm-charts"
+  - GH_REPO="github.com/vooban/${REPO}.git"
+  - secure: oXPZRNHI02uNoP11zKdWFL1O5Iq2i9cf4kT2PhO1idmhXelLcJCt/80N4d7ygY+LTbns3v856Sz+V0gKMihI8qmF0oAg9Heg3bIbH76SW8Gl+IhELw0YixJIwhTL0TmoSQkxJsN2k/39GmkNGo9rdGkO6ssCGDgFob2ok/m3DpJ10+DLtL3PifaSw0Bt2mMRmB1Bowx1ay+TBFZxwsm4mHv8dN22xh5oycO+LkzekDp6UdIOXdiDC1Gkb+W7MKNutfNCo++t2SqGO+I1fXE1DjO+qTfVNPJkxsiLu/jCbYjyAzej1tqIMMEjb85tDb9D4HgeN0PWHRNAEz0ox094xnHwv/uSmMdUmzJii69RQfvHlI8LiG5DzsDg/E012Fm6K61BLqZH2kS6XKHZKEXMn7dTnj+ul+u+gMKUw+3N9Q3bxOzeaQILIyMIPryQz747PzvJBeQVgrcdep4dDbDKjPvWzc8IqIwGq/c/jlOschsoP2LmzI9TfkRWmpFvuPVkPN9ojcEK+91doGDNkmLCNeqs7fXZ0+6KMvoJP8MKTRLflwGaydLmx87XfuZAzYOVhsfNhy9FFthLrHqADHw30qOVopnQ5uR1zFvA8iWIGvAptGy8SauzduE82KRgAx+M1RZn0mPJX3hMMOis1HhbbR5diptCmGzjPgkIxx3yW/4=
 install:
-  - wget http://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O /tmp/helm.tar.gz
-  - tar xzf /tmp/helm.tar.gz -C /tmp --strip-components=1
-  - chmod +x /tmp/helm
-
+- wget http://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz
+  -O /tmp/helm.tar.gz
+- tar xzf /tmp/helm.tar.gz -C /tmp --strip-components=1
+- chmod +x /tmp/helm
 before_script:
-  - /tmp/helm init --client-only
-  - /tmp/helm repo add vooban https://vooban.github.io/vooban-helm
+- "/tmp/helm init --client-only"
+- "/tmp/helm repo add vooban https://vooban.github.io/vooban-helm"
 script:
-  - /tmp/helm lint */
-  - /tmp/helm package */
-  - /tmp/helm repo index --merge index.yaml .
-  - git add .
-  - git commit -m "Chart update [skip ci]"
-  - branch_name=`git rev-parse --abbrev-ref HEAD`
-  - git push origin $branch_name
+- "/tmp/helm lint */"
+- "/tmp/helm package */"
+- "/tmp/helm repo index --merge index.yaml ."
+after_success:
+- MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
+- git clone git://${GH_REPO}
+- mv -f *.tgz index.yaml ${REPO}
+- cd ${REPO}
+- git remote
+- git config user.email ${EMAIL}
+- git config user.name ${USER}
+- git add .
+- git commit -m ${MESSAGE}
+- git push "https://${TRAVIS_SECURE_TOKEN_NAME}@${GH_REPO}" master > /dev/null 2>&1
