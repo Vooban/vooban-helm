@@ -16,7 +16,6 @@ install:
 - chmod +x /tmp/helm
 before_script:
 - "/tmp/helm init --client-only"
-- "/tmp/helm repo add vooban https://vooban.github.io/vooban-helm"
 script:
 - "/tmp/helm lint */"
 - "/tmp/helm package */"
