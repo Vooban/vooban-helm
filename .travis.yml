@@ -4,7 +4,7 @@ sudo: false
 env:
   global:
   - HELM_VERSION="v2.12.3"
-  - USER="Travis CI"
+  - USER="TravisCi"
   - EMAIL="travis-ci@vooban.com"
   - REPO="helm-charts"
   - GH_REPO="github.com/vooban/${REPO}.git"
