@@ -19,8 +19,6 @@ before_script:
 script:
 - "/tmp/helm lint */"
 - "/tmp/helm package */"
-after_success:
-- MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
 - git clone git://${GH_REPO}
 - mv -f *.tgz ${REPO}
 - cd ${REPO}
@@ -29,5 +27,5 @@ after_success:
 - git config user.email ${EMAIL}
 - git config user.name ${USER}
 - git add .
-- git commit -m ${MESSAGE}
+- git commit -m "Update"
 - git push "https://${GITHUB_API_KEY}@${GH_REPO}" master # > /dev/null 2>&1
