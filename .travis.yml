@@ -20,12 +20,12 @@ before_script:
 script:
 - "/tmp/helm lint */"
 - "/tmp/helm package */"
-- "/tmp/helm repo index --merge index.yaml ."
 after_success:
 - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
 - git clone git://${GH_REPO}
-- mv -f *.tgz index.yaml ${REPO}
+- mv -f *.tgz ${REPO}
 - cd ${REPO}
+- "/tmp/helm repo index --merge index.yaml ."
 - git remote
 - git config user.email ${EMAIL}
 - git config user.name ${USER}
