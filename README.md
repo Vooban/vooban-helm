@@ -1,3 +1,5 @@
+https://travis-ci.org/Vooban/vooban-helm.svg?branch=master
+
 # Vooban Helm Charts
 A few helm charts that we use in our projects.
 
