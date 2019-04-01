@@ -1,4 +1,4 @@
-https://travis-ci.org/Vooban/vooban-helm.svg?branch=master
+[![Build Status](https://travis-ci.org/Vooban/vooban-helm.svg?branch=master)](https://travis-ci.org/Vooban/vooban-helm)
 
 # Vooban Helm Charts
 A few helm charts that we use in our projects.
