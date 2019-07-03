@@ -7,6 +7,10 @@ ingresses:
     rewrite: /
     readTimeout: 60
     annotations: {}
+    configurationSnippets: []
+
+
+configurationSnippets: []
 
 hosts:
   - chart-example.local

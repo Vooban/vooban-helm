@@ -12,11 +12,19 @@ metadata:
     kubernetes.io/ingress.class: nginx
     {{- if .rewrite }}
     nginx.ingress.kubernetes.io/rewrite-target: {{ .rewrite }}
+    {{- end }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
+      {{- if .rewrite }}
       {{- range $ingress.paths }}
       {{ printf "rewrite ^(%s)$ $1/ permanent;" .path }}
       {{- end }}
-    {{- end }}
+      {{- end }}
+      {{- range $ingress.configurationSnippets }}
+      {{ printf "%s" . }}
+      {{- end }}
+      {{- range $.Values.configurationSnippets }}
+      {{ printf "%s" . }}
+      {{- end }}
     nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .readTimeout | default $.Values.defaultReadTimeout | quote }}
     nginx.ingress.kubernetes.io/proxy-send-timeout: {{ .sendTimeout | default $.Values.defaultSendTimeout | quote }}
     {{- if $ingress.annotations }}
