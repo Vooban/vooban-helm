@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: "2.1"
 description: This chart deploys an ingress that requests https certificates and routes traffic
 name: tls-ingress
-version: 2.1.0
+version: 2.1.1
