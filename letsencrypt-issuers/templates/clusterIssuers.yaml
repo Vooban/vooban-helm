@@ -10,8 +10,11 @@ spec:
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-staging
-    # Enable HTTP01 validations
-    http01: {}
+    # Add a single challenge solver, HTTP01 using nginx
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
 ---
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: ClusterIssuer
@@ -25,5 +28,8 @@ spec:
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt
-    # Enable HTTP01 validations
-    http01: {}
+    # Add a single challenge solver, HTTP01 using nginx
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
