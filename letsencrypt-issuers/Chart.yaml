@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: "2.0"
 description: A Helm to deploy LetsEncrypt ClusterIssuers for production and staging
 name: letsencrypt-issuers
-version: 2.0.0
+version: 2.0.1

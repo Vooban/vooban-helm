@@ -10,6 +10,9 @@ metadata:
     release: {{ $.Release.Name }}
   annotations:
     kubernetes.io/ingress.class: nginx
+    {{- if $.tls.clusterIssuer }}
+    certmanager.k8s.io/cluster-issuer: {{ $.tls.clusterIssuer }}
+    {{- end }}
     {{- if .rewrite }}
     nginx.ingress.kubernetes.io/rewrite-target: {{ .rewrite }}
     {{- end }}
