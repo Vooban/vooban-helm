@@ -11,7 +11,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     {{- if $.Values.tls.clusterIssuer }}
-    certmanager.k8s.io/cluster-issuer: {{ $.Values.tls.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ $.Values.tls.clusterIssuer }}
     {{- end }}
     {{- if .rewrite }}
     nginx.ingress.kubernetes.io/rewrite-target: {{ .rewrite }}
