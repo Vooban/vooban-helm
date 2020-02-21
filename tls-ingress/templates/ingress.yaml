@@ -17,11 +17,6 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: {{ .rewrite }}
     {{- end }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      {{- if .rewrite }}
-      {{- range $ingress.paths }}
-      {{ printf "rewrite ^(%s)$ $1/ permanent;" .path }}
-      {{- end }}
-      {{- end }}
       {{- range $ingress.configurationSnippets }}
       {{ printf "%s" . }}
       {{- end }}
