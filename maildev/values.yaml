@@ -4,6 +4,12 @@
 
 replicaCount: 1
 
+maildev:
+  WebUser: ""
+  WebPassSecret: 
+    name: ""
+    key: "maildevWebPass"
+
 image:
   repository: maildev/maildev
   pullPolicy: IfNotPresent
