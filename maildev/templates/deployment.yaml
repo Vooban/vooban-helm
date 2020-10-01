@@ -34,6 +34,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            {{ if .Values.maildev.WebUser }}
             - name: MAILDEV_WEB_USER
               value:  {{ .Values.maildev.WebUser }}
             - name: MAILDEV_WEB_PASS
@@ -41,6 +42,7 @@ spec:
                 secretKeyRef:
                   name:  {{ .Values.maildev.WebPassSecret.name }}
                   key:  {{ .Values.maildev.WebPassSecret.key }}
+            {{ end }}
           ports:
             - name: http
               containerPort: 1080
