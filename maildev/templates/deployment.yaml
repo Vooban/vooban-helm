@@ -33,6 +33,16 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{ if .Values.maildev.WebUser }}
+            - name: MAILDEV_WEB_USER
+              value:  {{ .Values.maildev.WebUser }}
+            - name: MAILDEV_WEB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name:  {{ .Values.maildev.WebPassSecret.name }}
+                  key:  {{ .Values.maildev.WebPassSecret.key }}
+            {{ end }}
           ports:
             - name: http
               containerPort: 1080
@@ -42,11 +52,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
