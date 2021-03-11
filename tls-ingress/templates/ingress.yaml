@@ -4,7 +4,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: {{ lower (randAlphaNum 20) | quote }}
+  name: {{ .name | default (lower (randAlphaNum 20)) | quote }}
   labels:
     chart: {{ template "tls-ingress.chart" $ }}
     release: {{ $.Release.Name }}
