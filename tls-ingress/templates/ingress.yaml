@@ -1,7 +1,7 @@
 {{- range .Values.ingresses }}
 {{- $ingress := . }}
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .name | default (lower (randAlphaNum 20)) | quote }}
@@ -9,7 +9,6 @@ metadata:
     chart: {{ template "tls-ingress.chart" $ }}
     release: {{ $.Release.Name }}
   annotations:
-    kubernetes.io/ingress.class: nginx
     {{- if $.Values.tls.clusterIssuer }}
     cert-manager.io/cluster-issuer: {{ $.Values.tls.clusterIssuer }}
     {{- end }}
@@ -29,6 +28,7 @@ metadata:
 {{ toYaml $ingress.annotations | indent 4 }}
     {{- end }}
 spec:
+  ingressClassName: nginx
 {{- if $.Values.tls }}
   tls:
     - hosts:
@@ -45,8 +45,11 @@ spec:
         {{- range $ingress.paths }}
           - path: {{ .path }}
             backend:
-              serviceName: {{ .serviceName }}
-              servicePort: {{ .port }}
+              service:
+                name: {{ .serviceName }}
+                port:
+                  number: {{ .port }}
+            pathType: ImplementationSpecific 
         {{- end }}
     {{- end }}
 {{- end}}

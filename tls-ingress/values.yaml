@@ -1,14 +1,12 @@
-
 ingresses:
   - paths:
-    - path: /
-      serviceName: hello-service
-      port: 80
+      - path: /
+        serviceName: hello-service
+        port: 80
     rewrite: /
     readTimeout: 60
     annotations: {}
     configurationSnippets: []
-
 
 configurationSnippets: []
 
