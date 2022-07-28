@@ -28,7 +28,7 @@ metadata:
 {{ toYaml $ingress.annotations | indent 4 }}
     {{- end }}
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ .ingressClassName | default $.Values.defaultIngressClassName }}
 {{- if $.Values.tls }}
   tls:
     - hosts:
